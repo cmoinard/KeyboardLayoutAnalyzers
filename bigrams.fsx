@@ -295,19 +295,28 @@ let digramTable : Table<DigramCompare> =
         ShowTotal = true
     }
 
+let allLetters =
+   "abcdefghijklmnopqrstuvwxyz,."
+   |> Seq.map _.ToString()
+   |> Seq.toList
 
 
-
+// ["i"]
+// |> List.collect (
+//     allLetters
+//     |> List.filter ((<>) "i")
+//     |> DigramStat.compareStrings
+// )
 ["q"]
 |> List.collect (
-    DigramStat.compareStrings [
-        "s"
-        "n"
-        //yield! HomeRow.right
-    ])
+    [
+        yield! HomeRow.left
+        yield! HomeRow.right
+    ]
+    |> DigramStat.compareStrings
+)
 |> List.sortByDescending (fun d ->
-    d.Symbols
-    //d.TotalFrequencyEn + d.TotalFrequencyFr
+    d.TotalFrequencyEn + d.TotalFrequencyFr
 )
 |> DigramStat.table false
 |> printfn "%s"
